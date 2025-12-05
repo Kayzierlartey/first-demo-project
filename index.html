@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Diageo One | Premium Retailer Portal</title>
+  <title>NexaOne| Premium Retailer Portal</title>
 
   <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -38,8 +38,8 @@
       height: 210px;
       width: 100%;
       object-fit: contain;
-      box-shadow: none !important;
-      filter: none !important;
+      box-shadow: none ;
+      filter: none ;
     }
 
     .product-info {
@@ -75,7 +75,7 @@
 <!------------------ LOGIN SCREEN ------------------>
 <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gray-900">
   <div class="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md text-center">
-    <h1 class="text-5xl font-bold text-gray-900 mb-3">Diageo One</h1>
+    <h1 class="text-5xl font-bold text-gray-900 mb-3">NexaOne</h1>
     <p class="text-gray-600 mb-10">Premium Retailer Portal</p>
 
     <input id="username" placeholder="Username"
@@ -89,7 +89,7 @@
       Access Portal
     </button>
 
-    <p class="text-sm text-gray-500 mt-6">Demo: admin / diageo2025</p>
+    <p class="text-sm text-gray-500 mt-6">Demo: admin / nexa2025</p>
   </div>
 </div>
 
@@ -103,7 +103,7 @@
 <!---------- SIDEBAR ---------->
 <aside class="w-full lg:w-80 bg-gray-900 text-white flex flex-col">
   <div class="p-10 text-center border-b border-white/10">
-    <h1 class="text-4xl font-bold">Diageo One</h1>
+    <h1 class="text-4xl font-bold">NexaOne</h1>
     <p class="opacity-80 mt-2">Premium Collection</p>
   </div>
 
@@ -203,30 +203,134 @@
   </div>
 </div>
 
-
-
-
-
-
 <!------------------ JAVASCRIPT ------------------>
 <script>
-/* ------------------ PRODUCT LIST ------------------ */
 const products = [
-  { id: 1, name: "Johnnie Walker Black Label", price: 420, pack: "12×1L", category: "Whisky",
-    image: "https://images.unsplash.com/photo-1718882300226-08412de1c41d?w=500" },
+  {
+    id: 1,
+    name: "Johnnie Walker Black Label",
+    price: 420,
+    pack: "12×1L",
+    category: "Whisky",
+    image: "https://images.unsplash.com/photo-1718882300226-08412de1c41d?w=500"
+  },
+  {
+    id: 2,
+    name: "Johnnie Walker Blue Label",
+    price: 2400,
+    pack: "6×750ml",
+    category: "Whisky",
+    image: "https://images.unsplash.com/photo-1718881949257-ea7e578101f3?w=500"
+  },
+  {
+    id: 4,
+    name: "Smirnoff No.21",
+    price: 180,
+    pack: "12×1L",
+    category: "Vodka",
+    image: "https://images.ctfassets.net/tlircn1cnxbm/6LRBBMgmBW55jAKfQxsGT1/312c82957169fbbd2697fe3bd2f0283a/11708905_home-hero-v2.jpg"
+  },
+  {
+    id: 12,
+    name: "Guinness Foreign Stout",
+    price: 52,
+    pack: "24×330ml",
+    category: "Beer",
+    image: "https://images.ctfassets.net/8nq3bs98o7cv/6OKy3mAvcqZ59NfmvJGMA8/dc29e4473a9486e75acea1026e924b72/Guinness.com_Assets_Landscape_Fes_Bottle_Kv_Small"
+  },
+  {
+    id: 13,
+    name: "Guinness Draught",
+    price: 48,
+    pack: "24×440ml",
+    category: "Beer",
+    image: "https://images.unsplash.com/photo-1613254025943-82399193fbfa?w=500"
+  },
 
-  { id: 2, name: "Johnnie Walker Blue Label", price: 2400, pack: "6×750ml", category: "Whisky",
-    image: "https://images.unsplash.com/photo-1718881949257-ea7e578101f3?w=500" },
-
-  { id: 4, name: "Smirnoff No.21", price: 180, pack: "12×1L", category: "Vodka",
-    image: "https://images.ctfassets.net/tlircn1cnxbm/6LRBBMgmBW55jAKfQxsGT1/312c82957169fbbd2697fe3bd2f0283a/11708905_home-hero-v2.jpg" },
-
-  { id: 12, name: "Guinness Foreign Extra Stout", price: 52, pack: "24×330ml", category: "Beer",
-    image: "https://images.ctfassets.net/8nq3bs98o7cv/6OKy3mAvcqZ59NfmvJGMA8/dc29e4473a9486e75acea1026e924b72/Guinness.com_Assets_Landscape_Fes_Bottle_Kv_Small" },
-
-  { id: 13, name: "Guinness Draught", price: 48, pack: "24×440ml", category: "Beer",
-    image: "https://guinness.com/sites/g/files/eyylmv426/files/2024-01/guinness-draught-can.png" },
+  {
+    id: 14,
+    name: "Baileys Irish Cream",
+    price: 165,
+    pack: "12×1L",
+    category: "Cream Liqueur",
+    image: "https://cellar.com/cdn/shop/products/130314_81ac4243-4967-400a-b5c6-f58874de954c.jpg?v=1681882442"
+  },
+  {
+    id: 15,
+    name: "Gulder",
+    price: 350,
+    pack: "6×1L",
+    category: "Beer",
+    image: "https://beercollect.wordpress.com/wp-content/uploads/2014/01/gulder-lager.jpg?w=585"
+  },
+  {
+    id: 16,
+    name: "Cîroc Red Berry",
+    price: 360,
+    pack: "6×1L",
+    category: "Vodka",
+    image: "https://images.unsplash.com/photo-1594631252844-12596e3d9042?w=500"
+  },
+  {
+    id: 17,
+    name: "Smirnoff Black",
+    price: 295,
+    pack: "12×1L",
+    category: "Spirit",
+    image: "https://i.pinimg.com/1200x/01/35/e7/0135e79f63689ff4595c81bb7cf3647d.jpg"
+  },
+  {
+    id: 18,
+    name: "Heineken",
+    price: 420,
+    pack: "6×1L",
+    category: "Beer",
+    image: "https://i.pinimg.com/736x/96/eb/4f/96eb4fca2cd991c6ae59d209b643008f.jpg"
+  },
+  {
+    id: 19,
+    name: "Malta Guinness",
+    price: 210,
+    pack: "12×1L",
+    category: "Malt",
+    image: "https://www.afrosmartshop.com/wp-content/uploads/2019/11/malta-guinness-blanc.png"
+  },
+  {
+    id: 20,
+    name: " Alvaro",
+    price: 200,
+    pack: "12×1L",
+    category: "malta",
+    image: "https://melcom.com/media/catalog/product/cache/d0e1b0d5c74d14bfa9f7dd43ec52d082/6/7/67741a.jpg"
+  },
+  {
+    id: 21,
+    name: "Pet Malt",
+    price: 650,
+    pack: "6×700ml",
+    category: "Malt",
+    image: "https://4wayfoods.com/wp-content/uploads/2025/08/Malta-Guinness-bottle-330ml-Malt-Non-alcoholic-Drink-765x765.jpg"
+  },
+  {
+    id: 22,
+    name: "Guarana Can",
+    price: 1900,
+    pack: "6×750ml",
+    category: "spirit",
+    image: "https://i.pinimg.com/736x/3d/3a/2d/3d3a2ded1ab577bc688113836e8a8477.jpg"
+  },
+  {
+    id: 23,
+    name: "Gordon’s London Dry Gin",
+    price: 160,
+    pack: "12×1L",
+    category: "Gin",
+    image: "https://images.unsplash.com/photo-1581291518838-103be3c7a4f2?w=500"
+  }
 ];
+
+
+
 
 
 
