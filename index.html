@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diageo One | Premium Retailer Portal</title>
+
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --soft-white: #f3f6fa;
+      --light-blue: #dce9ff;
+      --blue-accent: #3b82f6;
+      --blue-dark: #1e3a8a;
+    }
+
+    .card {
+      background: var(--light-blue);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .product-top {
+      background: var(--light-blue);
+      padding: 20px;
+      position: relative;
+    }
+    .product-img {
+      height: 210px;
+      width: 100%;
+      object-fit: contain;
+      box-shadow: none !important;
+      filter: none !important;
+    }
+
+    .product-info {
+      background: var(--soft-white);
+      padding: 24px;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-accent));
+      color: white;
+    }
+    .qty-box {
+      background: #e7f0ff;
+    }
+
+    .fav-btn.active {
+      color: #facc15;
+      text-shadow: 0 0 10px #facc15;
+    }
+
+    .search-highlight {
+      background: #fff3b0;
+      border-radius: 4px;
+      padding: 0 3px;
+    }
+  </style>
+</head>
+
+
+
+<body class="bg-gray-50 min-h-screen">
+
+<!------------------ LOGIN SCREEN ------------------>
+<div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gray-900">
+  <div class="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-md text-center">
+    <h1 class="text-5xl font-bold text-gray-900 mb-3">Diageo One</h1>
+    <p class="text-gray-600 mb-10">Premium Retailer Portal</p>
+
+    <input id="username" placeholder="Username"
+      class="w-full mb-4 px-6 py-4 rounded-xl border border-gray-300 text-lg">
+
+    <input id="password" type="password" placeholder="Password"
+      class="w-full mb-8 px-6 py-4 rounded-xl border border-gray-300 text-lg">
+
+    <button id="loginBtn"
+      class="w-full bg-gradient-to-r from-gray-900 to-yellow-600 text-white py-5 rounded-xl font-bold text-xl shadow-xl">
+      Access Portal
+    </button>
+
+    <p class="text-sm text-gray-500 mt-6">Demo: admin / diageo2025</p>
+  </div>
+</div>
+
+
+
+
+
+<!------------------ MAIN APP ------------------>
+<div id="app" class="hidden h-screen flex flex-col lg:flex-row">
+
+<!---------- SIDEBAR ---------->
+<aside class="w-full lg:w-80 bg-gray-900 text-white flex flex-col">
+  <div class="p-10 text-center border-b border-white/10">
+    <h1 class="text-4xl font-bold">Diageo One</h1>
+    <p class="opacity-80 mt-2">Premium Collection</p>
+  </div>
+
+  <div class="flex-1 px-8 py-6 overflow-y-auto">
+    <h3 class="text-xs uppercase tracking-widest opacity-70 mb-6">Categories</h3>
+    <div id="categoryList" class="space-y-3"></div>
+  </div>
+
+  <div class="p-8 border-t border-white/10 space-y-4">
+    <button onclick="showFavorites()"
+      class="w-full py-4 bg-white/10 rounded-xl hover:bg-white/20 flex items-center justify-center gap-3">
+      <i class="fas fa-heart text-xl"></i> Favorites (<span id="favCount">0</span>)
+    </button>
+
+    <button onclick="logout()" class="w-full py-4 bg-white/10 rounded-xl hover:bg-white/20">
+      Logout
+    </button>
+  </div>
+</aside>
+
+
+
+
+
+<!---------- MAIN CONTENT ---------->
+<div class="flex-1 flex flex-col">
+
+  <!------ HEADER ------>
+  <header class="bg-white shadow-lg sticky top-0 z-40">
+    <div class="px-8 py-6 flex items-center justify-between">
+
+      <div class="relative flex-1 max-w-2xl">
+        <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input id="searchInput" placeholder="Search any brand..."
+          class="w-full pl-16 pr-8 py-4 rounded-2xl bg-gray-100 text-lg">
+      </div>
+
+      <button onclick="openCart()"
+        class="relative ml-8 p-5 bg-blue-500 rounded-2xl shadow-xl text-white hover:scale-110 transition">
+        <i class="fas fa-shopping-cart text-2xl"></i>
+        <span id="cartCount"
+          class="absolute -top-3 -right-3 bg-red-600 text-white text-sm font-bold rounded-full h-8 w-8 flex items-center justify-center">
+          0
+        </span>
+      </button>
+
+    </div>
+  </header>
+
+
+
+
+
+  <!------ PRODUCTS GRID ------>
+  <main class="flex-1 p-8 lg:p-12 overflow-y-auto">
+    <h2 id="categoryTitle" class="text-4xl font-bold mb-12">All Premium Brands</h2>
+
+    <div id="productsGrid"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10">
+    </div>
+  </main>
+
+</div>
+
+</div>
+
+
+
+
+
+
+<!------------------ CART MODAL ------------------>
+<div id="cartModal"
+  class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50 p-6">
+
+  <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-screen overflow-hidden flex flex-col">
+    
+    <div class="bg-gray-900 text-white p-8 flex justify-between items-center">
+      <h2 class="text-3xl font-bold">Order Summary</h2>
+      <button onclick="closeCart()" class="text-4xl">&times;</button>
+    </div>
+
+    <div id="cartItems" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
+
+    <div class="p-8 bg-gray-50 border-t-4 border-blue-500">
+      <div class="flex justify-between text-3xl font-bold mb-8">
+        <span>Total</span>
+        <span id="totalPrice">$0.00</span>
+      </div>
+
+      <button onclick="placeOrder()"
+        class="w-full py-6 bg-blue-600 text-white text-xl font-bold rounded-2xl hover:bg-blue-700">
+        Place Order
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!------------------ JAVASCRIPT ------------------>
+<script>
+/* ------------------ PRODUCT LIST ------------------ */
+const products = [
+  { id: 1, name: "Johnnie Walker Black Label", price: 420, pack: "12×1L", category: "Whisky",
+    image: "https://images.unsplash.com/photo-1718882300226-08412de1c41d?w=500" },
+
+  { id: 2, name: "Johnnie Walker Blue Label", price: 2400, pack: "6×750ml", category: "Whisky",
+    image: "https://images.unsplash.com/photo-1718881949257-ea7e578101f3?w=500" },
+
+  { id: 4, name: "Smirnoff No.21", price: 180, pack: "12×1L", category: "Vodka",
+    image: "https://images.ctfassets.net/tlircn1cnxbm/6LRBBMgmBW55jAKfQxsGT1/312c82957169fbbd2697fe3bd2f0283a/11708905_home-hero-v2.jpg" },
+
+  { id: 12, name: "Guinness Foreign Extra Stout", price: 52, pack: "24×330ml", category: "Beer",
+    image: "https://images.ctfassets.net/8nq3bs98o7cv/6OKy3mAvcqZ59NfmvJGMA8/dc29e4473a9486e75acea1026e924b72/Guinness.com_Assets_Landscape_Fes_Bottle_Kv_Small" },
+
+  { id: 13, name: "Guinness Draught", price: 48, pack: "24×440ml", category: "Beer",
+    image: "https://guinness.com/sites/g/files/eyylmv426/files/2024-01/guinness-draught-can.png" },
+];
+
+
+
+/* ------------------ STATE ------------------ */
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+let favorites = JSON.parse(localStorage.getItem("favs") || "[]");
+let currentCategory = "All";
+
+
+
+
+/* ------------------ LOGIN ------------------ */
+document.getElementById("loginBtn").onclick = () => {
+  if (username.value === "admin" && password.value === "diageo2025") {
+    loginScreen.classList.add("hidden");
+    app.classList.remove("hidden");
+    initApp();
+  } else {
+    alert("Wrong credentials.");
+  }
+};
+
+function logout() {
+  app.classList.add("hidden");
+  loginScreen.classList.remove("hidden");
+}
+
+
+
+
+/* ------------------ INIT ------------------ */
+function initApp() {
+  renderCategories();
+  renderProducts();
+  updateCartCount();
+  favCount.textContent = favorites.length;
+}
+
+
+
+
+/* ------------------ CATEGORY LIST ------------------ */
+function renderCategories() {
+  const categories = ["All","Whisky","Vodka","Beer"];
+
+  categoryList.innerHTML = categories.map(cat => `
+    <button onclick="filterCategory('${cat}')"
+      class="w-full px-6 py-3 rounded-xl ${cat==='All'?'bg-white text-gray-900':'bg-white/10'}">
+      ${cat}
+    </button>
+  `).join("");
+}
+
+function filterCategory(cat) {
+  currentCategory = cat;
+  categoryTitle.textContent = cat === "All" ? "All Premium Brands" : cat;
+  renderProducts();
+}
+
+
+
+
+
+/* ------------------ SEARCH ------------------ */
+searchInput.addEventListener("input", renderProducts);
+
+function highlight(text, query) {
+  if (!query) return text;
+  return text.replace(new RegExp(query, "gi"), match => `<span class="search-highlight">${match}</span>`);
+}
+
+
+
+
+/* ------------------ PRODUCT GRID ------------------ */
+function renderProducts() {
+  const q = searchInput.value.toLowerCase();
+
+  let list = [...products];
+
+  if (currentCategory !== "All") {
+    list = list.filter(p => p.category === currentCategory);
+  }
+
+  if (currentCategory === "Favorites") {
+    list = products.filter(p => favorites.includes(p.id));
+  }
+
+  if (q) {
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.pack.toLowerCase().includes(q)
+    );
+  }
+
+  productsGrid.innerHTML = list.map(p => {
+    const qty = cart.find(i => i.id === p.id)?.qty || 0;
+    const isFav = favorites.includes(p.id);
+
+    return `
+      <div class="card">
+
+        <div class="product-top">
+          <img src="${p.image}" class="product-img">
+
+          <button onclick="toggleFavorite(${p.id})"
+            class="absolute top-5 right-5 text-3xl fav-btn ${isFav?'active':''}">
+            <i class="fas fa-heart"></i>
+          </button>
+
+          <span class="absolute top-5 left-5 bg-blue-700 text-white px-3 py-1 rounded-full text-xs">
+            ${p.category}
+          </span>
+        </div>
+
+        <div class="product-info">
+
+          <h3 class="text-xl font-bold">${highlight(p.name, q)}</h3>
+          <p class="text-gray-500">${highlight(p.pack, q)}</p>
+
+          <div class="mt-4">
+            <div class="text-3xl font-bold text-blue-800">$${p.price}</div>
+            <p class="text-sm text-gray-500">per case</p>
+          </div>
+
+          ${
+            qty > 0
+            ? `
+              <div class="qty-box mt-5 rounded-xl flex items-center justify-center py-3">
+                <button onclick="updateQty(${p.id}, -1)"
+                  class="w-10 h-10 rounded-lg hover:bg-blue-200 text-xl">-</button>
+
+                <span class="mx-5 text-2xl font-bold">${qty}</span>
+
+                <button onclick="updateQty(${p.id}, 1)"
+                  class="w-10 h-10 rounded-lg hover:bg-blue-200 text-xl">+</button>
+              </div>
+            `
+            : `
+              <button onclick="updateQty(${p.id}, 1)"
+                class="add-btn w-full mt-5 py-4 rounded-xl text-lg font-bold">
+                Add Case
+              </button>
+            `
+          }
+
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  if (list.length === 0) {
+    productsGrid.innerHTML = `
+      <div class="col-span-full text-center text-gray-400 text-2xl py-20">
+        No products found.
+      </div>`;
+  }
+}
+
+
+
+
+/* ------------------ FAVORITES ------------------ */
+function toggleFavorite(id) {
+  if (favorites.includes(id)) {
+    favorites = favorites.filter(f => f !== id);
+  } else {
+    favorites.push(id);
+  }
+  localStorage.setItem("favs", JSON.stringify(favorites));
+  favCount.textContent = favorites.length;
+  renderProducts();
+}
+
+function showFavorites() {
+  currentCategory = "Favorites";
+  categoryTitle.textContent = "Favorites";
+  renderProducts();
+}
+
+
+
+
+/* ------------------ CART ------------------ */
+function updateQty(id, change) {
+  let item = cart.find(i => i.id === id);
+
+  if (item) {
+    item.qty += change;
+    if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  } else if (change > 0) {
+    const p = products.find(x => x.id === id);
+    cart.push({ id, qty: 1, name: p.name, pack: p.pack, price: p.price, image: p.image });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  renderProducts();
+  renderCart();
+}
+
+function updateCartCount() {
+  cartCount.textContent = cart.reduce((a,c)=>a+c.qty,0);
+  totalPrice.textContent = "$" + cart.reduce((a,c)=>a+(c.qty*c.price),0).toFixed(2);
+}
+
+function openCart() {
+  renderCart();
+  cartModal.classList.remove("hidden");
+}
+
+function closeCart() {
+  cartModal.classList.add("hidden");
+}
+
+function renderCart() {
+  if (cart.length === 0) {
+    cartItems.innerHTML = `
+      <div class="text-center py-20 text-2xl text-gray-400">
+        Your cart is empty.
+      </div>
+    `;
+    return;
+  }
+
+  cartItems.innerHTML = cart.map(i => `
+    <div class="flex bg-gray-100 p-5 rounded-2xl gap-6 shadow">
+
+      <img src="${i.image}" class="w-24 h-24 object-contain">
+
+      <div class="flex-1">
+        <h3 class="text-2xl font-bold">${i.name}</h3>
+        <p class="text-gray-500">${i.pack}</p>
+        <p class="text-blue-700 font-bold mt-2">$${i.price}</p>
+      </div>
+
+      <div class="flex items-center bg-gray-200 px-3 py-2 rounded-xl">
+        <button onclick="updateQty(${i.id}, -1)" class="text-2xl w-10">-</button>
+        <span class="mx-4 text-xl font-bold">${i.qty}</span>
+        <button onclick="updateQty(${i.id}, 1)" class="text-2xl w-10">+</button>
+      </div>
+
+    </div>
+  `).join("");
+
+  updateCartCount();
+}
+
+function placeOrder() {
+  alert("Order placed successfully!");
+  cart = [];
+  localStorage.setItem("cart", "[]");
+  updateCartCount();
+  renderProducts();
+  renderCart();
+  closeCart();
+}
+
+</script>
+
+</body>
+</html>
